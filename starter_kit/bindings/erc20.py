@@ -113,6 +113,18 @@ class ERC20:
         """
         return_value = self._contract.functions.decimals().call()
         return int(return_value)
+    
+    def deposit(
+        self,
+    ) -> contract.ContractFunction:
+        """Binding for `deposit` on the WATN contract.
+
+        Returns
+        -------
+        web3.contract.contract.ContractFunction
+            A contract function instance to be sent in a transaction.
+        """
+        return self._contract.functions.deposit()
 
     def name(
         self,
@@ -194,6 +206,25 @@ class ERC20:
         return self._contract.functions.transferFrom(
             from_,
             to,
+            value,
+        )
+    
+    def withdraw(
+        self,
+        value: int,
+    ) -> contract.ContractFunction:
+        """Binding for `withdraw` on the WATN contract.
+
+        Parameters
+        ----------
+        value : int
+
+        Returns
+        -------
+        web3.contract.contract.ContractFunction
+            A contract function instance to be sent in a transaction.
+        """
+        return self._contract.functions.withdraw(
             value,
         )
 
@@ -372,6 +403,20 @@ ABI = typing.cast(
             ],
             "name": "transferFrom",
             "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+            "stateMutability": "nonpayable",
+            "type": "function",
+        },
+        {
+            "inputs": [],
+            "name": "deposit",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function",
+        },
+        {
+            "inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+            "name": "withdraw",
+            "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function",
         },

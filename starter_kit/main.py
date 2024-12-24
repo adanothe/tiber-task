@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+import time
 from typing import cast
 
 from web3 import Web3, HTTPProvider
@@ -25,11 +26,16 @@ signer_middleware = cast(
 )
 w3.middleware_onion.add(signer_middleware)
 
-for _ in range(10_000):
-    task = random.choice(tasks)
-    logger.info(task.__name__)
-    try:
-        task(w3)
-    except ContractLogicError as e:
-        # Contract execution reverted
-        logger.warning(e)
+def execute_tasks():
+    for _ in range(10_000):
+        task = random.choice(tasks)
+        logger.info(task.__name__)
+        try:
+            task(w3)
+        except ContractLogicError as e:
+            # Contract execution reverted
+            logger.warning(e)
+
+while True:
+    execute_tasks()
+    time.sleep(3600)  
